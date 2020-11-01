@@ -1,0 +1,148 @@
+
+  .display{
+    display: block;
+    width: 90%;
+    margin: 30px auto;
+    padding: 20px;
+    font-size: 20px;
+    height: calc(100vh - 380px);
+    height: 300px;
+    min-height: 300px;
+    max-width: 960px;
+    border-radius: 6px;
+    border: none;
+    line-height: 150%;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  }
+  .display:focus{
+    outline: none;
+  }
+  .keyboard{
+    font-family: 'Didact Gothic', sans-serif;
+    width: 100%;
+    max-width: 960px;
+    position: fixed;
+    bottom: 0px;
+    left: calc(50%);
+    transform: translateX(-50%);
+    height: 255px;
+    margin: 0 auto;
+    border: 1px solid #808080;
+    border-radius: 5px;
+    display: flex;
+    padding-bottom: 3px;
+    flex-wrap: wrap;
+    background:  #c4c9cf;
+    box-shadow:  0px 0px 11px 2px rgba(0,0,0,0.1);
+    transition: 0.5s;
+      &--hidden{
+        bottom: -100%;
+      }
+  }
+  
+  .keyboard__key{
+    width: 6%;
+    height: 45px;
+    border: 1px solid	#808080;
+    margin: 0.3%;
+    outline: none;
+    border-radius: 7px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:	#f5f5f5;
+    box-shadow:1px 1px 0px 0px rgba(128,128,128,0.75);
+    color:	#5e5e5e;
+        &:hover{
+                cursor: pointer;
+            }
+        &:active{
+            background: #E8E8E8;
+            box-shadow: 0.5px 0.5px 0px 0px rgba(0,0,0,0.75) ;
+            transform: translate(0.5px, 0.5px);
+            transition: all 0.2s ease 0s;
+        }
+        &--active_shift{
+          color: #08ff00 !important;
+        }
+        &--active_voice{
+          color: rgb(177, 6, 6) !important;
+        }
+        &--backspace{
+          width: 13%;
+          font-size: 20px;
+          justify-content: flex-end;
+          align-items: flex-end;
+        }
+        &--tab{
+          width: 6.5%;
+          font-size: 20px;
+          justify-content: flex-start;
+          align-items: flex-end;
+        }
+        &--capsLock,
+        &--shiftLeft{
+          position: relative;
+          width: 13%;
+          font-size: 20px;
+          justify-content: flex-start;
+          align-items: flex-end;
+        }
+        &--capsLock::after{
+          content: '';
+          top: 5px;
+          left: 5px;
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          transition: 0.5s;
+          background: rgba(0, 0, 0, 0.6);
+          border-radius: 50%;
+        }
+        &--capsLock_active::after{
+          background: #08ff00 !important;
+          transition: 0.5s;
+        }
+        &--enter,
+        &--shiftRight{
+          width: 12.5%;
+          font-size: 20px;
+
+        }
+        &--shiftRight{
+          justify-content: flex-end;
+          align-items: flex-end;
+        }
+        &--controlLeft{
+          width: 10%;
+        }
+        &--meta{
+          width: 50px;
+          font-size: 14px;
+        }
+        &--space{
+          width: 42%;
+        }
+        &--arrow{
+          font-size: 10px;
+        }
+  }
+ 
+  
+  .active{
+   background: #E8E8E8;
+   box-shadow: 0.5px 0.5px 0px 0px rgba(0,0,0,0.75) ;
+   transform: translate(0.5px, 0.5px);
+   transition: all 0.2s ease 0s;
+  }
+  
+  .hidden{
+    display: none;
+  }
+  .press{
+    background: #E8E8E8;
+    box-shadow: 0.5px 0.5px 0px 0px rgba(0,0,0,0.75) ;
+    transform: translate(0.5px, 0.5px);
+    transition: all 0.2s ease 0s;
+  }
