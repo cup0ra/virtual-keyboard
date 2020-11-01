@@ -4,9 +4,9 @@ class Keyboard {
         this.keyboard = document.createElement('div');
         this.textarea = document.createElement('textarea');
         this.capsLock = true;
-        this.language = true;
+        this.language = localStorage.getItem('language') === 'false' ? false : true;
         this.shift = false;
-        this.sound = true;
+        this.sound = localStorage.getItem('sound') === 'false' ? false : true;
         this.active = false;
         this.voice = true;
         this.render = () => {
@@ -23,7 +23,6 @@ class Keyboard {
             this.recognition.addEventListener('result', (event) => {
                 for (let i = event.resultIndex; i < event.results.length; ++i) {
                     let speechToText = event.results[i][0].transcript;
-                    console.log(speechToText);
                     this.textarea.setRangeText(speechToText, this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
                 }
             });
@@ -83,10 +82,11 @@ class Keyboard {
                 keyElement.setAttribute("type", "button");
                 keyElement.classList.add("keyboard__key");
                 keyElement.setAttribute('data-code', key);
+                const languageKey = this.language ? this.symbol.EN[i] : this.symbol.RUS[i];
                 switch (key) {
                     case 'Backspace':
                         keyElement.classList.add("keyboard__key--backspace");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', () => {
                             if (this.textarea.value.length > 0) {
                                 this.textarea.setRangeText('', this.textarea.selectionStart - 1, this.textarea.selectionStart, 'select');
@@ -97,7 +97,7 @@ class Keyboard {
                         break;
                     case 'Tab':
                         keyElement.classList.add("keyboard__key--tab");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.textarea.setRangeText('\t', this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
                             this.textarea.focus();
@@ -106,7 +106,7 @@ class Keyboard {
                         break;
                     case 'Delete':
                         keyElement.classList.add("keyboard__key--del");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.textarea.setRangeText('', this.textarea.selectionStart, this.textarea.selectionStart + 1, 'select');
                             this.textarea.focus();
@@ -115,7 +115,7 @@ class Keyboard {
                         break;
                     case 'CapsLock':
                         keyElement.classList.add("keyboard__key--capsLock");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', (e) => {
                             this.pressCaps();
                             e.target.classList.toggle('press');
@@ -125,7 +125,7 @@ class Keyboard {
                         break;
                     case 'Enter':
                         keyElement.classList.add("keyboard__key--enter");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.textarea.setRangeText('\n', this.textarea.selectionStart, this.textarea.selectionStart, 'end');
                             this.textarea.focus();
@@ -134,7 +134,7 @@ class Keyboard {
                         break;
                     case 'ShiftLeft':
                         keyElement.classList.add("keyboard__key--shiftLeft");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', (e) => {
                             this.shift = !this.shift;
                             e.target.classList.toggle('keyboard__key--active_shift');
@@ -145,7 +145,7 @@ class Keyboard {
                         break;
                     case 'ShiftRight':
                         keyElement.classList.add("keyboard__key--shiftRight");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', (e) => {
                             this.shift = !this.shift;
                             e.target.classList.toggle('keyboard__key--active_shift');
@@ -156,7 +156,7 @@ class Keyboard {
                         break;
                     case 'ControlLeft':
                         keyElement.classList.add("keyboard__key--controlLeft");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', (e) => {
                             this.keyboard.classList.add('keyboard--hidden');
                             this.textarea.placeholder = 'Click here...';
@@ -166,7 +166,7 @@ class Keyboard {
                         break;
                     case 'ControlRight':
                         keyElement.classList.add("keyboard__key--controlRight");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.playAudio(key);
                         });
@@ -191,16 +191,17 @@ class Keyboard {
                         });
                         break;
                     case 'AltRight':
-                        keyElement.innerHTML = this.createIconHTML("volume_up");
+                        keyElement.innerHTML = this.createIconHTML(`${this.sound ? 'volume_up' : 'volume_off'}`);
                         keyElement.addEventListener('click', () => {
                             this.playAudio(key);
                             this.sound = !this.sound;
                             keyElement.innerHTML = this.createIconHTML(`${this.sound ? 'volume_up' : 'volume_off'}`);
+                            localStorage.setItem('sound', String(this.sound));
                         });
                         break;
                     case 'Space':
                         keyElement.classList.add("keyboard__key--space");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.textarea.setRangeText(' ', this.textarea.selectionStart, this.textarea.selectionStart, 'end');
                             this.textarea.focus();
@@ -209,21 +210,21 @@ class Keyboard {
                         break;
                     case 'ArrowUp':
                         keyElement.classList.add("keyboard__key--arrow");
-                        keyElement.innerHTML = this.symbol.EN[i];
+                        keyElement.innerHTML = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.playAudio(key);
                         });
                         break;
                     case 'ArrowDown':
                         keyElement.classList.add("keyboard__key--arrow");
-                        keyElement.innerHTML = this.symbol.EN[i];
+                        keyElement.innerHTML = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.playAudio(key);
                         });
                         break;
                     case 'ArrowLeft':
                         keyElement.classList.add("keyboard__key--arrow");
-                        keyElement.innerHTML = this.symbol.EN[i];
+                        keyElement.innerHTML = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.textarea.selectionEnd -= 1;
                             this.textarea.focus();
@@ -232,7 +233,7 @@ class Keyboard {
                         break;
                     case 'ArrowRight':
                         keyElement.classList.add("keyboard__key--arrow");
-                        keyElement.innerHTML = this.symbol.EN[i];
+                        keyElement.innerHTML = languageKey;
                         keyElement.addEventListener('click', () => {
                             this.textarea.selectionStart += 1;
                             this.textarea.focus();
@@ -246,11 +247,12 @@ class Keyboard {
                             e.target.textContent = this.language ? 'EN' : 'RU';
                             this.changeLanguageAndShift();
                             this.playAudio(key);
+                            localStorage.setItem('language', String(this.language));
                         });
                         break;
                     default:
                         keyElement.classList.add("standard");
-                        keyElement.textContent = this.symbol.EN[i];
+                        keyElement.textContent = languageKey;
                         keyElement.addEventListener("click", (e) => {
                             this.textarea.setRangeText(e.target.textContent, this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
                             this.textarea.focus();
@@ -316,6 +318,7 @@ class Keyboard {
         };
         this.symbol = state;
     }
+    ;
 }
 const keyboard = new Keyboard(keyboardSymbols);
 window.addEventListener("DOMContentLoaded", function () {
